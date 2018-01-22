@@ -15,4 +15,4 @@ const Pokemon = mongoose.model('Pokemon', {
 }) 
 
 // Ce module "Pokemon.js" exporte l'objet Mongoose correspondant au modèle d'un document "Pokemon" 
-module.exports = Pokemonu
+module.exports = Pokemon
