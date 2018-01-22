@@ -10,9 +10,11 @@ const app = express()
 
 app.use(helmet())
 app.use(morgan(process.env.NODE_DEV === 'production' ?  'combined' : 'dev'))
+app.use(express.urlencoded({ extended: false }))
 
-// app.get('/api/pokemons', PokemonController.findAll)
-app.get('/api/pokemons', PokemonController.findById)
+app.get('/api/pokemons', PokemonController.findAll)
+app.get('/api/pokemon/:id', PokemonController.findOne)
+app.post('/api/pokemon', PokemonController.add)
 
 // Configuration
 app.set('ip', 'localhost')
@@ -31,4 +33,4 @@ mongoose
     .then(() => startApp(app))
     .then(() => console.log(
         `L'application est en route sur http://${app.get('ip')}:${app.get('port')}`.bgGreen.black
-    ))
+	))
