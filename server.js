@@ -2,44 +2,32 @@ require('colors')
 const helmet = require('helmet')
 const express = require('express')
 const morgan = require('morgan')
-const MongoClient = require('mongodb').MongoClient;
+const mongoose = require('mongoose');
 const assert = require('assert')
+const PokemonController = require('./controllers/Pokemon')
 
 const app = express()
-let db = null
 
-process.env.NODE_DEV
-'development'
-'production'
+app.use(helmet())
+app.use(morgan(process.env.NODE_DEV === 'production' ?  'combined' : 'dev'))
 
-// connect to the server
-MongoClient.connect('mongodb://localhost:27017', (err, client) => {
-	db = client.db('pokemons')
+app.get('/api/pokemons', PokemonController.findAll)
 
-	app.use(helmet())
-	app.use(morgan(process.env.NODE_DEV === 'production' ?  'combined' : 'dev'))
+// Configuration
+app.set('ip', 'localhost')
+app.set('port', 9000)
 
-	app.get('/api/pokemons', (request, res) => {
-		db.collection('pokemons').find({}).toArray((err, pokemons) => {
-			res.json(pokemons)
-		})
-	})
-
-	app.listen(9000, () => console.log('Listening on port 9000'.rainbow))
-	
-})
-
-
-
-const findDocuments = function(db, callback) {
-	// Get the documents collection
-	const collection = db.collection('pokemons');
-	
-	// Find some documents
-	collection.find({}).toArray(function(err, docs) {
-		assert.equal(err, null);
-		console.log("Found the following records");
-		console.log(docs)
-		callback(docs);
-	});
+const startApp = app => {
+    return new Promise( (resolve, reject) => {
+        const server = app.listen(app.get('port'), app.get('ip'), resolve)
+        server.on('error', reject)
+    })
 }
+
+mongoose
+    .connect('mongodb://localhost:27017/pokemons', {useMongoClient:true})
+    .then(() => console.log(`MongoDB : Connexion établie`.bgGreen.black))
+    .then(() => startApp(app))
+    .then(() => console.log(
+        `L'application est en route sur http://${app.get('ip')}:${app.get('port')}`.bgGreen.black
+    ))
