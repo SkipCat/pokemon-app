@@ -27,3 +27,10 @@ exports.add = (request, response) => {
 	})
 	.catch(err => response.status(500).send(err.message)) 
 }
+
+exports.remove = (request, response) => {
+	PokemonModel.findByIdAndRemove(request.params.id).then(pokemon => {
+		return Promise.reject(new Error('This pokemon does not exist'))
+	})
+	.catch(err => response.status(500).send(err.message)) 
+}

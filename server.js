@@ -12,9 +12,11 @@ app.use(helmet())
 app.use(morgan(process.env.NODE_DEV === 'production' ?  'combined' : 'dev'))
 app.use(express.urlencoded({ extended: false }))
 
-app.get('/api/pokemons', PokemonController.findAll)
-app.get('/api/pokemon/:id', PokemonController.findOne)
-app.post('/api/pokemon', PokemonController.add)
+// List of URLs reachable
+app.get('/api/pokemons/list', PokemonController.findAll)
+app.get('/api/pokemons/:id', PokemonController.findOne)
+app.post('/api/pokemons/add', PokemonController.add)
+app.delete('/api/pokemons/delete/:id', PokemonController.remove)
 
 // Configuration
 app.set('ip', 'localhost')
