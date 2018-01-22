@@ -12,7 +12,7 @@ const Pokemon = mongoose.model('Pokemon', {
 	type    : { type : String, required : true }, 
 	attack  : { type : Number, required : true }, 
 	defense : { type : Number, required : true } 
-}); 
+}) 
 
 // Ce module "Pokemon.js" exporte l'objet Mongoose correspondant au modèle d'un document "Pokemon" 
-module.exports = Pokemon
+module.exports = Pokemonu

@@ -11,7 +11,8 @@ const app = express()
 app.use(helmet())
 app.use(morgan(process.env.NODE_DEV === 'production' ?  'combined' : 'dev'))
 
-app.get('/api/pokemons', PokemonController.findAll)
+// app.get('/api/pokemons', PokemonController.findAll)
+app.get('/api/pokemons', PokemonController.findById)
 
 // Configuration
 app.set('ip', 'localhost')
